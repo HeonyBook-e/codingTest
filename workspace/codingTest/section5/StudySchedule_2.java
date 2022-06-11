@@ -47,20 +47,15 @@ public class StudySchedule_2{
 	}
 	
 	public String solution(String man, String sch){
-		String answer;
+		String answer = "YES";
 		Queue<Character> manQ = new LinkedList<>();
-		Queue<Character> schQ = new LinkedList<>();
-		for(char x : man.toCharArray()) manQ.add(x);
-		for(char x : sch.toCharArray()) schQ.add(x);
-		
-		for(int i = 0; i < sch.length(); i++){
-			if(schQ.peek() == manQ.peek()) manQ.poll();
-			schQ.poll();
+		for(char x : man.toCharArray()) manQ.offer(x);
+		for(char x : sch.toCharArray()){
+			if(manQ.contains(x)) {
+				if(x != manQ.poll()) return "NO";
+			}				
 		}
-		
-		if(manQ.isEmpty()) answer = "YES";
-		else answer = "NO";
-		
+		if(!manQ.isEmpty()) return "NO";		
 		return answer;		
 	}
 }

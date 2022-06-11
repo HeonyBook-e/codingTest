@@ -1,4 +1,4 @@
-//6. 공주 구하기
+//6. 공주 구하기 ★★★★★ Queue 활용
 //설명
 //
 //정보 왕국의 이웃 나라 외동딸 공주가 숲속의 괴물에게 잡혀갔습니다.
@@ -50,28 +50,33 @@ public class SavePrincess_2{
 		
 		sc.close();
 	}
-	
+	/*
 	public int solution(int len, int k){
-		Stack<Integer> prince = new Stack<>();
-		Stack<Integer> idxSt = new Stack<>();
-		int idx = k-1;
-		for(int i = 0; i < len; i++) prince.push(i);
+		Queue<Integer> prince = new LinkedList<>();
+		for(int i = 0; i < len; i++) prince.offer(i);
+		int i = 1;
 		
 		while(prince.size() > 1){
-			int size = prince.size();
-		
-			while(idx < size){
-				idxSt.push(prince.get(idx));
-				idx += k;
-			}
-			
-			while(idxSt.size() > 0){
-				prince.remove(idxSt.pop());
-			}
-			
-			if(idx >= size) idx -= size;
+			if(i%k==0) prince.poll();
+			else prince.offer(prince.poll());
+			i++;
 		}
 		
-		return prince.pop()+1;
+		return prince.poll()+1;
 	}
+	*/
+	public int solution(int n, int k){
+		int answer = 0;
+		Queue<Integer> Q = new LinkedList<>();
+		for(int i = 1; i <= n; i++) Q.offer(i);
+	
+		while(!Q.isEmpty()){
+			for(int i = 1; i < k; i++) Q.offer(Q.poll());
+			Q.poll();
+			if(Q.size() == 1) answer = Q.poll();
+		}
+		
+		return answer;
+	}
+	
 }

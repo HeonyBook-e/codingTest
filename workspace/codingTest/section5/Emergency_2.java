@@ -1,4 +1,4 @@
-//8. 응급실
+//8. 응급실 ★★★★★ 클래스 생성 및 객체 활용
 //설명
 //
 //메디컬 병원 응급실에는 의사가 한 명밖에 없습니다.
@@ -40,50 +40,46 @@ public class Emergency_2{
 		Emergency_2 getter = new Emergency_2();
 		Scanner sc = new Scanner(System.in);
 		int n = sc.nextInt();
-		int order = sc.nextInt();
-		Queue<Integer> p = new LinkedList<>();
-		for(int i = 0; i < n; i++) p.add(sc.nextInt());		
+		int m = sc.nextInt();
+		int[] arr = new int[n];
+		for(int i = 0; i < n; i++) arr[i] = sc.nextInt();
 		
-		System.out.print(getter.solution(n, order, p));
+		System.out.print(getter.solution(n, m, arr));
 		
 		sc.close();
 	}
 	
-	public int solution(int n, int order, Queue<Integer> p){
+	public int solution(int n, int m, int[] arr){
 		int answer = 0;
-
-		Queue<Integer> orderTicket = new LinkedList<>();
-		for(int i = 0; i < n; i++) orderTicket.add(i);
+		Queue<Person> Q = new LinkedList<>();
+		for(int i = 0; i < n; i++) {
+			Q.offer(new Person(i, arr[i]));
+		}
 		
-		while(!p.isEmpty()){
-			int op = 0;
-			
-			for(int i = 0; i < p.size(); i++){
-				if(op < p.peek()){
-					op = p.peek();
-				}
-				p.add(p.poll());
-			}
-			
-			int tn = 0;
-			
-			for(int i = 0; i < p.size(); i++){
-				if(op != p.peek()){
-					p.add(p.poll());
-					orderTicket.add(orderTicket.poll());
-				} else {
-					op = p.poll();
-					tn = orderTicket.poll();
+		while(!Q.isEmpty()) {
+			Person tmp = Q.poll();
+			for(Person x : Q) {
+				if(x.priority > tmp.priority) {
+					Q.offer(tmp);
+					tmp = null;
 					break;
 				}
 			}
-			
-			answer++;
-			if(tn == order){
-				break;
-			}		
+			if(tmp != null) {
+				answer ++;
+				if(tmp.id == m) return answer;
+			}			
 		}
 		
 		return answer;		
+	}
+}
+
+class Person{
+	int id;
+	int priority;
+	public Person(int id, int priority) {
+		this.id = id;
+		this.priority = priority;
 	}
 }
